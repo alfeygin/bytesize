@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BEVJM9CKP7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BEVJM9CKP7');
+</script>
+<script>
+  // Send a GA event when a link tagged with data-ga-event is clicked.
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest && e.target.closest('[data-ga-event]');
+    if (!el || typeof gtag !== 'function') return;
+    gtag('event', el.getAttribute('data-ga-event'), {
+      link_url: el.href || '',
+      link_text: (el.textContent || '').trim()
+    });
+  });
+</script>
+<title>Privacy · ByteSize</title>
+<meta name="description" content="How the ByteSize website uses Google Analytics, and why the ByteSize tool itself collects nothing.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://alfeygin.github.io/bytesize.tool/privacy.html">
+<meta name="theme-color" content="#16332c">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+:root{--accent:#3F7A63;--deep:#16302C;--ink:#111111;--muted:#555555;--line:#ebe7dd;--cream:#F5F0E8;--mono:'IBM Plex Mono',ui-monospace,monospace}
+body{margin:0;background:#FFFFFF;color:var(--ink);font-family:'Archivo',system-ui,sans-serif;font-size:17px;line-height:1.6}
+main{max-width:680px;margin:0 auto;padding:48px 20px 72px}
+.back{font-family:var(--mono);font-size:13px;color:var(--accent);text-decoration:none}
+.back:hover{text-decoration:underline}
+h1{font-size:clamp(34px,6vw,48px);font-weight:500;letter-spacing:-0.03em;line-height:1.1;margin:28px 0 8px}
+.date{font-family:var(--mono);font-size:13px;color:var(--muted);margin:0 0 32px}
+.callout{background:var(--cream);border-left:3px solid var(--accent);padding:16px 20px;border-radius:6px;margin:0 0 32px}
+.callout p{margin:0}
+h2{font-size:21px;font-weight:600;letter-spacing:-0.01em;margin:36px 0 8px;color:var(--deep)}
+p,li{color:#222}
+ul{padding-left:22px}
+li{margin:4px 0}
+a{color:var(--accent)}
+footer{border-top:1px solid var(--line);margin-top:48px;padding-top:16px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="./">← Back to ByteSize</a>
+<h1>Privacy</h1>
+<p class="date">Effective October 31, 2026</p>
+
+<div class="callout"><p><strong>The short version:</strong> the ByteSize tool never sends your data anywhere. This website uses Google Analytics to count visits and button clicks, and that's all.</p></div>
+
+<h2>Who runs this site</h2>
+<p>ByteSize and this website are made by Anna Feygin-McCutcheon. You can reach me at <a href="mailto:hello.bytesizetool@gmail.com">hello.bytesizetool@gmail.com</a>.</p>
+
+<h2>The ByteSize tool</h2>
+<p>ByteSize runs entirely in your browser on your own computer. It opens your DAT file with your browser's local File API and has no server, no analytics, and no external connections in its code. Nothing you open in ByteSize is collected, stored, or seen by me or anyone else.</p>
+
+<h2>This website</h2>
+<p>This website uses Google Analytics, a service from Google, to understand how many people visit and which links they use. Google Analytics uses cookies to tell visits apart. It collects information such as:</p>
+<ul>
+<li>Pages viewed and how long you stayed</li>
+<li>Which buttons and links you clicked, such as the download, LinkedIn, Ko-fi, and feedback links</li>
+<li>Your approximate location (city or region, based on your IP address)</li>
+<li>Your browser, device type, and screen size</li>
+<li>The website that referred you here, if any</li>
+</ul>
+<p>I use this information only to see how the site is used and to improve ByteSize. I don't sell it, and I don't use it for advertising. Google processes this data under <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>; you can read <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">how Google uses information from sites that use its services</a>. Detailed analytics data is kept for up to 14 months.</p>
+
+<h2>Your choices</h2>
+<ul>
+<li>Block or delete cookies in your browser settings.</li>
+<li>Install the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>.</li>
+<li>Use the ByteSize tool without visiting this website again. The tool works fully offline.</li>
+</ul>
+<p>This site doesn't currently respond to browser "Do Not Track" signals, because there isn't a common standard for them. The options above work instead.</p>
+
+<h2>Feedback forms and email</h2>
+<p>The "Report an issue" and "Send a suggestion" links open Google Forms. Anything you type there is collected by Google Forms and shared with me so I can respond and improve ByteSize. If you email me, I use your address only to reply.</p>
+
+<h2>Children</h2>
+<p>This site is meant for legal professionals and isn't directed to children under 13.</p>
+
+<h2>Changes</h2>
+<p>If this policy changes, I'll update it here and change the effective date above.</p>
+
+<footer>© 2026 ByteSize · <a href="./">Home</a></footer>
+</main>
+</body>
+</html>
