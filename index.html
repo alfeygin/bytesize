@@ -1,256 +1,765 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ByteSize — coming soon</title>
-<meta name="description" content="ByteSize is coming soon. Something's brewing — check back soon.">
-<!-- Light only, by design: the page commits to one warm daylight world. -->
-<meta name="color-scheme" content="light">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BEVJM9CKP7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BEVJM9CKP7');
+</script>
+<script>
+  // Send a GA event when a link tagged with data-ga-event is clicked.
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest && e.target.closest('[data-ga-event]');
+    if (!el || typeof gtag !== 'function') return;
+    gtag('event', el.getAttribute('data-ga-event'), {
+      link_url: el.href || '',
+      link_text: (el.textContent || '').trim()
+    });
+  });
+</script>
+<title>ByteSize</title>
+<meta name="description" content="Free, offline tool for legal professionals. Open a DAT load file and see Bates ranges, QC checks, custodians, and fields in seconds. Nothing is uploaded.">
+<meta name="author" content="Anna Feygin-McCutcheon">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://alfeygin.github.io/bytesize.tool/">
+<meta name="theme-color" content="#16332c">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="ByteSize — coming soon">
-<meta property="og:description" content="Something's brewing. Check back soon.">
-<meta name="twitter:card" content="summary">
+<meta property="og:site_name" content="ByteSize">
+<meta property="og:title" content="ByteSize: Raw Production Data Made Easy">
+<meta property="og:description" content="Free, offline tool for legal professionals. Open a DAT load file and see Bates ranges, QC checks, custodians, and fields in seconds. Nothing is uploaded.">
+<meta property="og:url" content="https://alfeygin.github.io/bytesize.tool/">
+<meta property="og:image" content="https://alfeygin.github.io/bytesize.tool/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ByteSize logo with the tagline Raw Production Data Made Easy">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ByteSize: Raw Production Data Made Easy">
+<meta name="twitter:description" content="Free, offline tool for legal professionals. Open a DAT load file and see Bates ranges, QC checks, custodians, and fields in seconds. Nothing is uploaded.">
+<meta name="twitter:image" content="https://alfeygin.github.io/bytesize.tool/og-image.png">
 
-<link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ByteSize",
+    "url": "https://alfeygin.github.io/bytesize.tool/",
+    "description": "Free, offline tool for legal professionals. Open a DAT load file and see Bates ranges, QC checks, custodians, and fields in seconds. Nothing is uploaded.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Any (runs in Chrome, Edge, Firefox, or Safari)",
+    "softwareVersion": "5.1.1",
+    "downloadUrl": "https://alfeygin.github.io/bytesize.tool/ByteSize.zip",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Anna Feygin-McCutcheon",
+      "url": "https://www.linkedin.com/in/annafeygin/"
+    },
+    "image": "https://alfeygin.github.io/bytesize.tool/og-image.png"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is my file uploaded anywhere?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. ByteSize opens your DAT with your browser's local File API and does all the work on your own computer. There's no server, no analytics, and no external connection in the code. Close the tab and the data is gone."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it work on a locked-down or air-gapped computer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Everything, fonts included, lives inside the one HTML file, so there's nothing to install and no admin rights needed. It runs the same with the network unplugged."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What load-file formats does it read?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Concordance DAT files (þ and ® delimiters, or ASCII 20), plus plain delimited text separated by tabs, pipes, commas, semicolons, or carets. The delimiter and encoding (UTF-8, UTF-16 LE/BE, or Windows-1252) are detected automatically."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if ByteSize doesn't recognize my Bates fields?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ByteSize knows the common names for Bates fields. If your production uses different names, ByteSize will ask you to review the fields. It makes its best guess first, but you can confirm or change any match so you’re reviewing the most accurate information. Select “Remember for files like this,” and you won’t have to match the fields every time."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the “Flagged for Review” QC check, and how does it work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It flags two kinds of records. Privilege language in metadata: any record whose metadata mentions terms like “privileged,” “attorney-client,” “work product,” or “withheld,” so you can confirm nothing privileged is about to go out the door. Scrubbed metadata: records where only production fields, like Bates numbers, are populated, which usually means the rest was intentionally removed. Use “Search in Grid” to jump straight to the flagged records. Flags are a starting point for your review; ByteSize doesn't make privilege determinations."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it cost anything?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. ByteSize is free to download and use. There's no license key, account, or subscription."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Which browsers does it work in?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Any current version of Chrome, Edge, Firefox, or Safari."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How big a production can it handle?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It's been tested with 500,000 records, which parse in about 5.5 seconds on a typical laptop. Productions past roughly a million rows can run into the browser's own memory limits."
+        }
+      }
+    ]
+  }
+]
+</script>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
-  @font-face {
-    font-family: 'Quicksand'; font-style: normal; font-weight: 500 700;
-    font-display: swap; src: url(assets/fonts/quicksand.woff2) format('woff2');
-  }
-  @font-face {
-    font-family: 'Nunito'; font-style: normal; font-weight: 400 700;
-    font-display: swap; src: url(assets/fonts/nunito.woff2) format('woff2');
-  }
+body{margin:0;background:#FFFFFF}
+.bs{--ink:#111111;--deep:#16302C;--accent:#3F7A63;--btn:#2F6B53;--btn-h:#245641;--hl:#cfe3c8;--cream:#F5F0E8;--shot:#F4F0E8;--line:#ebe7dd;--muted:#555555;--warn:#9a5b12;--mono:'IBM Plex Mono',ui-monospace,monospace;
+  font-family:'Archivo','Helvetica Neue',sans-serif;font-weight:400;color:var(--ink);background:#FFFFFF;font-size:17px;line-height:1.5;display:flex;align-items:flex-start;min-height:100vh}
+.bs a{color:var(--ink)}
+.bs a:hover{color:var(--accent)}
+.bs :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.bs h1,.bs h2,.bs h3{font-weight:500;margin:0}
 
-  :root {
-    --bg: #F6F3E7;
-    --surface: #FBF9EF;
-    --text: #16302C;
-    --text-muted: #5B6F68;
-    --text-faint: #7C8F86;
-    --border: #E7E2D0;
-    --border-strong: #D9D2B8;
-    --accent: #3F7A63;
-    --accent-strong: #2C5C49;
-    --accent-deep: #23493A;
-    --on-accent: #FBF9EF;
-    --accent-tint: #DCEEE3;
+/* ── sidebar ── */
+.bs-side{position:sticky;top:0;flex:none;width:380px;height:100vh;box-sizing:border-box;padding:36px 32px 24px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:32px;overflow-y:auto;background:#FFFFFF}
+.bs-brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.bs-brand span{font-size:30px;font-weight:600;letter-spacing:-0.02em;line-height:1.1;color:var(--ink)}
+.bs-eye{transform-box:fill-box;transform-origin:center;animation:bs-blink 4.2s infinite}
+@keyframes bs-blink{0%,88%,94%,100%{transform:scaleY(1)}91%{transform:scaleY(.12)}}
+.bs-tagline{margin:18px 0 0;font-size:16px;font-weight:600;letter-spacing:-0.01em;line-height:1.3;white-space:nowrap}
+.bs-tagline span{color:var(--accent)}
+.bs-pill{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--deep);background:var(--hl);border-radius:999px;padding:5px 10px}
+.bs-label{margin:0 0 12px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.bs-nav{display:flex;flex-direction:column;font-size:15px}
+.bs-nav a{position:relative;display:flex;align-items:baseline;gap:14px;padding:6px 0;text-decoration:none}
+.bs-nav .n{font-family:var(--mono);font-size:12px;color:var(--muted);width:20px;flex:none}
+.bs-nav a::before{content:"";position:absolute;left:-14px;top:50%;width:3px;height:18px;margin-top:-9px;border-radius:2px;background:var(--accent);opacity:0;transition:opacity .2s}
+.bs-nav a.is-active::before{opacity:1}
+.bs-nav a.is-active .n{color:var(--accent);font-weight:500}
+.bs-nav a.is-active .l{color:var(--deep);font-weight:600}
+.bs-glance{display:flex;flex-direction:column;font-size:14px}
+.bs-glance div{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:8px 0;border-bottom:1px solid var(--line)}
+.bs-glance div:last-child{border-bottom:none}
+.bs-glance b{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.bs-get{display:flex;flex-direction:column;gap:10px}
+.bs-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;box-sizing:border-box;min-height:46px;padding:12px 20px;border-radius:10px;font-size:15px;font-weight:500;text-decoration:none;border:1px solid transparent;transition:background-color .15s,border-color .15s,color .15s}
+.bs .bs-btn-solid{background:var(--btn);color:#FFFFFF}
+.bs .bs-btn-solid:hover{background:var(--btn-h);color:#FFFFFF}
+.bs .bs-btn-deep{background:var(--deep);color:#FFFFFF}
+.bs .bs-btn-deep:hover{background:#0d201d;color:#FFFFFF}
+.bs .bs-btn-line{background:#FFFFFF;color:var(--deep);border-color:#cfc9bb}
+.bs .bs-btn-line:hover{border-color:var(--btn);color:var(--btn)}
+.bs-foot{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding-top:12px}
+.bs-credit{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.7}
+.bs-credit p{margin:0}
+.bs-credit a{display:inline-flex;align-items:center;gap:5px}
+.bs-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-    /* Brewing palette */
-    --steel: #C9C3AE;
-    --coffee: #5E3320;
-    --coffee-light: #97552F;
-    --water: #A3C8DA;
-    --glass: #F1EFE3;
-    --glow: #E8A33D;
+/* mascot: peeks up now and then; hover pops him up, tilts him, and he looks around */
+.bs-mwrap{position:relative;flex:none;margin:0 6px -24px 0}
+/* clip only along the bottom edge, so he peeks up without his tilted corners being cut off */
+.bs-mascot{display:block;width:72px;height:74px;padding:0;border:0;background:none;cursor:pointer;clip-path:inset(-80px -40px 0 -40px)}
+.bs-mbody{display:block;transform-origin:50% 100%;transform:translateY(62%) rotate(-10deg);animation:bs-peek 16s ease-in-out -5s infinite;transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
+@keyframes bs-peek{0%,52%{transform:translateY(62%) rotate(-10deg)}58%{transform:translateY(4%) rotate(-10deg)}61%,88%{transform:translateY(10%) rotate(-10deg)}94%,100%{transform:translateY(62%) rotate(-10deg)}}
+.bs-mascot:hover .bs-mbody,.bs-mascot:focus-visible .bs-mbody,.bs-mwrap.is-talking .bs-mbody{animation:none;transform:translateY(4%) rotate(-12deg)}
+.bs-look{animation:none}
+.bs-mascot:hover .bs-look,.bs-mascot:focus-visible .bs-look,.bs-mwrap.is-talking .bs-look{animation:bs-look 2.4s ease-in-out infinite}
+@keyframes bs-look{0%,100%{transform:translate(0,0)}20%,35%{transform:translate(-14px,-4px)}55%,70%{transform:translate(14px,-4px)}85%{transform:translate(0,6px)}}
+.bs-bubble{position:absolute;right:58px;bottom:66px;white-space:nowrap;font-family:var(--mono);font-size:12px;font-weight:500;color:var(--deep);background:var(--hl);border-radius:12px 12px 2px 12px;padding:7px 11px;box-shadow:0 6px 16px -8px rgba(22,48,44,.45);opacity:0;transform:translateY(6px) scale(.96);transform-origin:100% 100%;transition:opacity .2s,transform .2s;pointer-events:none}
+.bs-mwrap:hover .bs-bubble,.bs-mwrap:focus-within .bs-bubble,.bs-mwrap.is-talking .bs-bubble{opacity:1;transform:none}
 
-    --sand: 'Quicksand', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --nun: 'Nunito', system-ui, -apple-system, 'Segoe UI', sans-serif;
-  }
+/* ── main column ── */
+.bs-main{flex:1 1 auto;min-width:0}
+.bs-inner{max-width:1280px;box-sizing:border-box;margin:0 auto;padding:48px clamp(20px,5vw,72px) 120px}
+.bs-hero h1{font-size:clamp(34px,4.6vw,64px);font-weight:500;line-height:1.04;letter-spacing:-0.035em;max-width:16ch;margin:0 auto;text-align:center;text-wrap:balance}
+.bs-video{position:relative;margin-top:36px}
+.bs-video video{display:block;width:100%;height:auto;aspect-ratio:924/540;object-fit:cover;border-radius:18px;background:var(--shot)}
+.bs-vidbtn{position:absolute;right:16px;bottom:16px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.92);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.bs-vidbtn:hover{background:#FFFFFF;color:var(--accent)}
+.bs-vidbtn .bs-ic-play{display:none}
+.bs-vidbtn.is-paused .bs-ic-play{display:block}
+.bs-vidbtn.is-paused .bs-ic-pause{display:none}
 
-  * { box-sizing: border-box; }
-  html, body { height: 100%; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--nun);
-    font-size: 17px; line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    display: flex; align-items: center; justify-content: center;
-    padding: 40px 24px; text-align: center;
-    position: relative; overflow-x: hidden;
-  }
-  body::before {
-    content: ''; position: absolute; inset: -25% 0 auto 0; height: 720px;
-    pointer-events: none;
-    background: radial-gradient(ellipse 52% 50% at 50% 45%,
-                rgba(63, 122, 99, .13), transparent 70%);
-  }
+.bs-sec{margin-top:24px;padding-top:24px;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px 40px}
+.bs-hero + .bs-sec{margin-top:48px}
+.bs-seclabel{margin:6px 0 0;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.bs-body{grid-column:2 / -1;min-width:0}
+.bs-sec h2{font-size:clamp(28px,3.3vw,44px);font-weight:500;line-height:1.08;letter-spacing:-0.03em}
+.bs-lead{margin:20px 0 0;font-size:19px;color:var(--muted);max-width:700px}
+.bs-lead + .bs-lead{margin-top:14px}
 
-  main { position: relative; width: 100%; max-width: 500px; }
+/* 01 tab picker: spans the full section width so the screenshot stays readable */
+.bs-wide{grid-column:1 / -1;min-width:0;container-type:inline-size}
+.bs-tabs{margin-top:16px;display:grid;grid-template-columns:minmax(180px,270px) minmax(0,1fr);gap:28px;align-items:start}
+.bs-tablist{display:flex;flex-direction:column;gap:2px}
+.bs-tab{display:block;width:100%;text-align:left;font:inherit;color:#888888;background:none;border:0;border-radius:12px;padding:9px 14px;cursor:pointer;transition:background-color .2s,color .2s}
+.bs-tab:hover{color:var(--ink)}
+.bs-tab .t{display:block;font-size:18px;font-weight:500;letter-spacing:-0.01em}
+.bs-tab .d{display:grid;grid-template-rows:0fr;transition:grid-template-rows .25s ease}
+.bs-tab .d > span{overflow:hidden;font-size:14px;line-height:1.45;color:#2e3a36}
+.bs-tab[aria-selected="true"]{background:var(--hl);color:var(--deep)}
+.bs-tab[aria-selected="true"] .d{grid-template-rows:1fr}
+.bs-tab[aria-selected="true"] .d > span{padding-top:4px;padding-bottom:2px}
+.bs-shot{position:relative;box-sizing:border-box;width:100%;margin:0;aspect-ratio:3/2;border-radius:16px;background:var(--shot);border:1px solid var(--line);overflow:hidden;cursor:zoom-in}
+.bs-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:top center}
+.bs-shot img[hidden]{display:none}
+.bs-expand{position:absolute;right:14px;bottom:14px;display:inline-flex;align-items:center;gap:8px;font:inherit;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:#FFFFFF;background:rgba(22,48,44,.88);border:0;border-radius:999px;padding:9px 14px;cursor:pointer}
+.bs-expand:hover{background:var(--deep)}
+.bs-cards{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.bs-card{background:var(--cream);border-radius:14px;padding:24px 26px}
+.bs-card .big{display:block;font-size:clamp(26px,2.6vw,34px);font-weight:600;letter-spacing:-0.02em;color:var(--deep);line-height:1.1}
+.bs-card .k{display:block;margin-top:14px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.bs-card p{margin:6px 0 0;font-size:15px;color:var(--muted)}
 
-  .brand { display: flex; align-items: center; justify-content: center; gap: 11px; margin-bottom: 26px; }
-  /* The mark is embedded rather than linked, so this page still looks right if
-     the file is ever opened on its own, away from the assets folder. */
-  .brand .mark {
-    width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
-    background: url(data:image/png;base64,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) center / contain no-repeat;
-  }
-  .brand span { font-family: var(--sand); font-weight: 700; font-size: 19px; }
+/* lightbox */
+.bs-lb{position:fixed;inset:0;z-index:100;background:rgba(22,48,44,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:24px;box-sizing:border-box;cursor:zoom-out}
+.bs-lb[hidden]{display:none}
+.bs-lbbar{width:100%;max-width:1400px;display:flex;align-items:center;justify-content:space-between;gap:16px;color:#FFFFFF}
+.bs-lbbar h3{font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--hl)}
+.bs-lbclose{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:transparent;color:#FFFFFF;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.bs-lbclose:hover{background:rgba(255,255,255,.12)}
+.bs-lb img{display:block;max-width:min(1400px,100%);max-height:calc(100vh - 120px);width:auto;height:auto;border-radius:14px;background:var(--shot)}
 
-  h1 {
-    font-family: var(--sand); font-weight: 700;
-    font-size: clamp(26px, 6vw, 38px);
-    letter-spacing: -0.01em; line-height: 1.14;
-    margin: 26px 0 0;
-  }
-  h1 em { font-style: normal; color: var(--accent); }
+/* 02 use cases */
+.bs-cases{margin-top:32px;max-width:820px}
+.bs-case{padding:24px 0;border-top:1px solid var(--line)}
+.bs-case:first-child{border-top:0;padding-top:0}
+.bs-kicker{margin:0;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.bs-case h3{margin-top:10px;font-size:28px;font-weight:400;line-height:1.2;letter-spacing:-0.02em}
+.bs-case h3 b{font-weight:600}
+.bs-case p:not(.bs-kicker){margin:10px 0 0;font-size:16px;color:var(--muted)}
 
-  /* ── Coffee maker ─────────────────────────────────────── */
-  .brewer { width: min(258px, 66vw); height: auto; margin: 0 auto; display: block; }
+/* 03 get started */
+.bs-steps{margin:32px 0 0;padding:20px 0 0;list-style:none;border-top:2px solid var(--deep);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px 28px}
+.bs-steps .n{display:block;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.12em;color:var(--accent)}
+.bs-steps b{display:block;margin-top:6px;font-size:20px;font-weight:600;letter-spacing:-0.01em}
+.bs-steps span:last-child{display:block;margin-top:4px;font-size:14px;color:var(--muted)}
+.bs-window{margin-top:36px;border-radius:16px;border:1px solid var(--line);background:var(--cream);overflow:hidden}
+.bs-wbar{display:flex;gap:7px;padding:13px 16px}
+.bs-wbar i{width:11px;height:11px;border-radius:50%;background:#d6d0c3}
+.bs-window video{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:var(--shot)}
+.bs-rely{margin:40px auto 0;text-align:center;max-width:620px}
+.bs-rely .bs-label{color:var(--warn);margin-bottom:6px}
+.bs-rely p:last-child{margin:0;font-size:16px;color:var(--muted)}
 
-  .water-fill  { transform-box: fill-box; transform-origin: bottom;
-                 animation: tank 9s ease-in-out infinite; }
-  .coffee-fill { transform-box: fill-box; transform-origin: bottom;
-                 animation: carafe 9s ease-in-out infinite; }
+/* 04 FAQ */
+.bs-faqs{margin-top:28px;border-top:1px solid var(--line)}
+.bs-faq{border-bottom:1px solid var(--line)}
+.bs-faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 0}
+.bs-faq summary::-webkit-details-marker{display:none}
+.bs-faq summary h3{font-size:19px;font-weight:500;letter-spacing:-0.01em}
+.bs-faq summary:hover h3{color:var(--accent)}
+.bs-chev{flex:none;color:var(--muted);transition:transform .2s ease}
+.bs-faq[open] .bs-chev{transform:rotate(180deg);color:var(--accent)}
+.bs-faq p{margin:0 0 22px;color:var(--muted);font-size:16px;max-width:700px}
 
-  @keyframes tank {
-    0%   { transform: scaleY(1); }
-    70%  { transform: scaleY(.05); }
-    84%  { transform: scaleY(.05); }
-    96%  { transform: scaleY(1); }
-    100% { transform: scaleY(1); }
-  }
-  @keyframes carafe {
-    0%   { transform: scaleY(.03); }
-    70%  { transform: scaleY(1); }
-    88%  { transform: scaleY(1); }
-    97%  { transform: scaleY(.03); }
-    100% { transform: scaleY(.03); }
-  }
+/* 05 contribute */
+.bs-actions{margin-top:32px;display:flex;flex-wrap:wrap;gap:12px}
 
-  /* Drips fall on their own short loop, staggered so the stream never stalls. */
-  .drip {
-    transform-box: fill-box; transform-origin: center;
-    animation: drip 1.15s linear infinite; opacity: 0;
-  }
-  .drip.d2 { animation-delay: .38s; }
-  .drip.d3 { animation-delay: .76s; }
-  .drip.c2 { animation-delay: .52s; }
+/* floating tip pill */
+.bs .bs-tip{position:fixed;right:20px;bottom:20px;z-index:50;display:inline-flex;align-items:center;gap:9px;padding:12px 18px;border-radius:999px;background:var(--hl);color:var(--deep);text-decoration:none;font-size:15px;font-weight:500;box-shadow:0 10px 28px -10px rgba(22,48,44,.45),0 2px 6px -2px rgba(22,48,44,.2)}
+.bs .bs-tip:hover{background:#bfd9b6;color:var(--deep)}
 
-  @keyframes drip {
-    0%   { transform: translateY(0)    scaleY(.7); opacity: 0; }
-    14%  { opacity: 1; }
-    82%  { opacity: 1; }
-    100% { transform: translateY(24px) scaleY(1.3); opacity: 0; }
-  }
-
-  .steam {
-    transform-box: fill-box; transform-origin: bottom center;
-    animation: steam 4.2s ease-out infinite; opacity: 0;
-  }
-  .steam.s2 { animation-delay: 1.4s; }
-  .steam.s3 { animation-delay: 2.8s; }
-  @keyframes steam {
-    0%   { transform: translateY(4px) scaleX(.8); opacity: 0; }
-    25%  { opacity: .55; }
-    100% { transform: translateY(-26px) scaleX(1.25); opacity: 0; }
-  }
-
-  .lamp { animation: lamp 2.6s ease-in-out infinite; }
-  @keyframes lamp { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
-
-  /* Hold a readable mid-brew pose for anyone who does not want motion. */
-  @media (prefers-reduced-motion: reduce) {
-    .water-fill, .coffee-fill, .drip, .steam, .lamp { animation: none; }
-    .water-fill  { transform: scaleY(.55); }
-    .coffee-fill { transform: scaleY(.45); }
-    .drip  { opacity: 1; }
-    .steam { opacity: .4; }
-  }
+@container (max-width: 600px){
+  .bs-tabs{grid-template-columns:1fr}
+}
+@media (max-width: 1000px){
+  .bs{display:block}
+  .bs-side{position:sticky;top:0;z-index:40;width:auto;height:auto;flex-direction:row;align-items:center;justify-content:space-between;gap:16px;padding:12px clamp(20px,5vw,72px);border-right:0;border-bottom:1px solid var(--line);overflow:visible}
+  .bs-side > :not(.bs-top):not(.bs-get){display:none}
+  .bs-brand span{font-size:22px}
+  .bs-brand svg{width:32px;height:32px}
+  .bs-tagline,.bs-pill,.bs-get .bs-label,.bs-get .bs-btn-line{display:none}
+  .bs-get .bs-btn{min-height:40px;padding:9px 16px;font-size:14px}
+  .bs-inner{padding-top:32px}
+  .bs-sec{grid-template-columns:1fr;gap:16px}
+  .bs-body,.bs-wide{grid-column:auto}
+  .bs-sec h2,.bs-sec{scroll-margin-top:72px}
+}
+@media (max-width: 640px){
+  .bs-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bs-tablist{grid-template-columns:1fr}
+  .bs-case h3{font-size:24px}
+  .bs .bs-tip{right:12px;bottom:12px;padding:10px 14px;font-size:14px}
+}
+@media (prefers-reduced-motion: reduce){
+  .bs-eye,.bs-mbody,.bs-look,.bs-mascot:hover .bs-look{animation:none!important}
+  .bs-mbody{transform:translateY(10%) rotate(-10deg)}
+  .bs-tab .d,.bs-mbody,.bs-bubble{transition:none}
+}
 </style>
 </head>
 <body>
-<main>
+<div class="bs">
 
-  <div class="brand">
-    <span class="mark" role="img" aria-label="ByteSize"></span>
-    <span>ByteSize</span>
-  </div>
+<!-- SIDEBAR -->
+<aside class="bs-side">
+<div class="bs-top">
+<a class="bs-brand" href="#top" aria-label="ByteSize, back to top">
+<svg aria-hidden="true" width="40" height="40" viewBox="-217 -138 650 650" style="display: block; flex: none">
+<rect x="-217" y="-138" width="650" height="650" rx="150" fill="#16332c"></rect>
+<g stroke="#cfdcc8" stroke-width="15" stroke-linecap="round"><line x1="-120" y1="109" x2="-48" y2="109"></line><line x1="-169" y1="166" x2="-129" y2="166"></line><line x1="-106" y1="166" x2="-43" y2="166"></line><line x1="-134" y1="226" x2="-83" y2="226"></line><line x1="-86" y1="283" x2="-43" y2="283"></line></g>
+<path d="M 24 0 H 222 L 300 80 V 333 A 24 24 0 0 1 276 357 H 24 A 24 24 0 0 1 0 333 V 24 A 24 24 0 0 1 24 0 Z" fill="#e6ebdc" stroke="#74b88f" stroke-width="12" stroke-linejoin="round"></path>
+<path d="M 222 0 C 226 44 252 74 300 80 Z" fill="#b8cdb1" stroke="#74b88f" stroke-width="11" stroke-linejoin="round"></path>
+<g fill="none" stroke="#16332c" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"><path d="M 88 146 Q 68 146 68 159 V 176 Q 68 189 48 189 Q 68 189 68 202 V 219 Q 68 232 88 232"></path><path d="M 212 146 Q 232 146 232 159 V 176 Q 232 189 252 189 Q 232 189 232 202 V 219 Q 232 232 212 232"></path></g>
+<ellipse class="bs-eye" cx="124" cy="189" rx="11" ry="11" fill="#16332c"></ellipse>
+<ellipse class="bs-eye" cx="176" cy="189" rx="11" ry="11" fill="#16332c"></ellipse>
+</svg>
+<span>ByteSize</span></a>
+<p class="bs-tagline">Raw production data, <span>made easy.</span></p>
+<span class="bs-pill">Built for legal professionals</span>
+</div>
 
-  <!-- Moccamaster-inspired brewer: tower on the right, arm across the top,
-       cone filter over the carafe. Decorative, so hidden from assistive tech. -->
-  <svg class="brewer" viewBox="0 0 240 320" role="img" aria-label="A coffee maker brewing" focusable="false">
-    <defs>
-      <clipPath id="tankClip"><rect x="182" y="36" width="34" height="112" rx="6"/></clipPath>
-      <clipPath id="carafeClip">
-        <path d="M80 184h68l-5 62a10 10 0 0 1-10 10H95a10 10 0 0 1-10-10z"/>
-      </clipPath>
-      <linearGradient id="bodyGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#4C8E74"/>
-        <stop offset="1" stop-color="#2C5C49"/>
-      </linearGradient>
-    </defs>
+<nav aria-label="Sections" class="bs-nav">
+<a href="#what" class="is-active"><span class="n">01</span><span class="l">What it does</span></a>
+<a href="#use-cases"><span class="n">02</span><span class="l">Use cases</span></a>
+<a href="#start"><span class="n">03</span><span class="l">Get started</span></a>
+<a href="#faq"><span class="n">04</span><span class="l">FAQ</span></a>
+<a href="#contribute"><span class="n">05</span><span class="l">Contribute</span></a>
+</nav>
 
-    <!-- base slab + warming plate -->
-    <rect x="36" y="266" width="192" height="18" rx="8" fill="var(--accent-deep)"/>
-    <rect x="58" y="256" width="112" height="11" rx="4" fill="#3A6B57"/>
+<div>
+<p class="bs-label">At a glance</p>
+<div class="bs-glance">
+<div><span>Version</span><b>v5.1.1</b></div>
+<div><span>Experience level</span><b>None required</b></div>
+<div><span>Install</span><b>None required</b></div>
+<div><span>Pricing</span><b>Free<svg aria-hidden="true" width="10" height="10" viewBox="-1 -1 2 2" style="display: block; flex: none"><path d="M0 -1 Q0.12 -0.12 1 0 Q0.12 0.12 0 1 Q-0.12 0.12 -1 0 Q-0.12 -0.12 0 -1 Z" fill="#74b88f"></path></svg></b></div>
+</div>
+</div>
 
-    <!-- tower + top arm -->
-    <rect x="74"  y="14" width="152" height="36"  rx="14" fill="url(#bodyGrad)"/>
-    <rect x="164" y="14" width="62"  height="252" rx="14" fill="url(#bodyGrad)"/>
+<div class="bs-get">
+<p class="bs-label" style="margin-bottom: 2px">Get it</p>
+<a class="bs-btn bs-btn-solid" href="ByteSize.zip" data-ga-event="download_website" download="ByteSize.zip">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></svg>
+Download ByteSize</a>
+<a class="bs-btn bs-btn-line" href="https://github.com/alfeygin/bytesize.tool/releases/tag/v5.1.1" data-ga-event="download_github" target="_blank" rel="noopener">
+<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg>
+Download via GitHub</a>
+</div>
 
-    <!-- copper heating element, the detail that says Moccamaster -->
-    <rect x="171" y="160" width="11" height="92" rx="5.5" fill="#B4703C"/>
-    <rect x="171" y="160" width="11" height="92" rx="5.5" fill="none"
-          stroke="#8E5528" stroke-width="1.5"/>
+<div class="bs-foot">
+<div class="bs-credit">
+<p>Developed by <a href="https://www.linkedin.com/in/annafeygin/" data-ga-event="click_linkedin" target="_blank" rel="noopener">Anna Feygin-McCutcheon<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style="display: block; flex: none"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"></path></svg><span class="bs-sr"> on LinkedIn</span></a></p>
+<p>© 2026 · <a href="mailto:hello.bytesizetool@gmail.com">Say Hi!</a></p>
+</div>
+<div class="bs-mwrap">
+<span class="bs-bubble" aria-live="polite">Hi! :)</span>
+<button type="button" class="bs-mascot" aria-label="Say hi to the ByteSize mascot">
+<svg class="bs-mbody" aria-hidden="true" width="72" height="86" viewBox="-12 -12 324 381">
+<path d="M 24 0 H 222 L 300 80 V 333 A 24 24 0 0 1 276 357 H 24 A 24 24 0 0 1 0 333 V 24 A 24 24 0 0 1 24 0 Z" fill="#cfe3c8" stroke="#1f3530" stroke-width="14" stroke-linejoin="round"></path>
+<path d="M 222 0 C 226 44 252 74 300 80 Z" fill="#a3d3ad" stroke="#1f3530" stroke-width="12" stroke-linejoin="round"></path>
+<g fill="none" stroke="#1f3530" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M 88 146 Q 68 146 68 159 V 176 Q 68 189 48 189 Q 68 189 68 202 V 219 Q 68 232 88 232"></path><path d="M 212 146 Q 232 146 232 159 V 176 Q 232 189 252 189 Q 232 189 232 202 V 219 Q 232 232 212 232"></path></g>
+<g class="bs-look"><circle class="bs-eye" cx="124" cy="189" r="12" fill="#1f3530"></circle><circle class="bs-eye" cx="176" cy="189" r="12" fill="#1f3530"></circle></g>
+</svg>
+</button>
+</div>
+</div>
+</aside>
 
-    <!-- water window -->
-    <rect x="182" y="36" width="34" height="112" rx="6" fill="var(--glass)"/>
-    <g clip-path="url(#tankClip)">
-      <rect class="water-fill" x="182" y="36" width="34" height="112" fill="var(--water)"/>
-    </g>
-    <rect x="182" y="36" width="34" height="112" rx="6" fill="none"
-          stroke="var(--accent-deep)" stroke-width="2.5"/>
-    <line x1="187" y1="64"  x2="198" y2="64"  stroke="var(--accent-deep)" stroke-width="2" opacity=".3"/>
-    <line x1="187" y1="92"  x2="198" y2="92"  stroke="var(--accent-deep)" stroke-width="2" opacity=".3"/>
-    <line x1="187" y1="120" x2="198" y2="120" stroke="var(--accent-deep)" stroke-width="2" opacity=".3"/>
+<main class="bs-main" id="top">
+<div class="bs-inner">
 
-    <!-- switch + indicator lamp -->
-    <rect x="187" y="196" width="24" height="12" rx="4" fill="var(--accent-deep)"/>
-    <circle class="lamp" cx="199" cy="224" r="5" fill="var(--glow)"/>
+<!-- HERO -->
+<section class="bs-hero" aria-labelledby="hero-h">
+<h1 id="hero-h">See what’s in a production before it’s loaded anywhere.</h1>
+<div class="bs-video">
+<video src="media/bytesize-mascot.mp4" poster="media/bytesize-mascot-poster.jpg" autoplay="" muted="" loop="" playsinline="" preload="auto" width="1280" height="720" aria-label="ByteSize mascot animation"></video>
+<button type="button" class="bs-vidbtn" aria-label="Pause animation" title="Pause animation">
+<svg class="bs-ic-play" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"></path></svg>
+<svg class="bs-ic-pause" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4.5" width="4" height="15" rx="1"></rect><rect x="14" y="4.5" width="4" height="15" rx="1"></rect></svg>
+</button>
+</div>
+</section>
 
-    <!-- spout under the arm -->
-    <rect x="96" y="48" width="28" height="16" rx="5" fill="var(--accent-deep)"/>
-    <rect x="106" y="62" width="8" height="7" rx="2" fill="var(--accent-deep)"/>
+<!-- 01 WHAT IT DOES -->
+<section id="what" class="bs-sec" aria-labelledby="what-h">
+<p class="bs-seclabel">01 — What it does</p>
+<div class="bs-body">
+<h2 id="what-h">One file. Five ways to review it.</h2>
+<p class="bs-lead">Every production comes with a DAT file, a behind-the-scenes index of the documents being produced. It maps each record’s Bates information to its metadata, such as custodians, dates, subject lines, and more. The file is built for machines to read, not people, so opening one means scrolling through walls of symbols and run-together text.</p>
+<p class="bs-lead">ByteSize changes that. It parses your DAT file entirely on your own computer, offline, and lays out the metadata in a clear, readable format, so you can see what’s in a production before it’s loaded anywhere.</p>
+</div>
 
-    <!-- water drips: spout to filter -->
-    <g fill="var(--water)">
-      <ellipse class="drip"    cx="110" cy="76" rx="3.2" ry="4.2"/>
-      <ellipse class="drip d2" cx="110" cy="76" rx="3.2" ry="4.2"/>
-      <ellipse class="drip d3" cx="110" cy="76" rx="3.2" ry="4.2"/>
-    </g>
+<div class="bs-wide">
+<div class="bs-tabs">
+<div class="bs-tablist" role="tablist" aria-label="ByteSize views" aria-orientation="vertical">
+<button type="button" class="bs-tab" role="tab" id="bs-tab-0" aria-controls="bs-shot" aria-selected="true"><span class="t">Overview</span><span class="d"><span>A quick summary of the production, with tally cards you can customize around the fields you care about. Copy any item straight into an email, memo, or notes.</span></span></button>
+<button type="button" class="bs-tab" role="tab" id="bs-tab-1" aria-controls="bs-shot" aria-selected="false" tabindex="-1"><span class="t">Fields</span><span class="d"><span>Confirm the fields produced match what your ESI order or protocol requires. Each field is shown with a sample value pulled straight from the load file.</span></span></button>
+<button type="button" class="bs-tab" role="tab" id="bs-tab-2" aria-controls="bs-shot" aria-selected="false" tabindex="-1"><span class="t">Grid</span><span class="d"><span>The whole file in a table you can sort, search, and actually read. No CSV conversion required.</span></span></button>
+<button type="button" class="bs-tab" role="tab" id="bs-tab-3" aria-controls="bs-shot" aria-selected="false" tabindex="-1"><span class="t">Quality check</span><span class="d"><span>Flags Bates gaps, duplicate Bates numbers, and duplicate documents by hash value. Also flags records for review: potentially privileged language, and records stripped down to production fields only.</span></span></button>
+<button type="button" class="bs-tab" role="tab" id="bs-tab-4" aria-controls="bs-shot" aria-selected="false" tabindex="-1"><span class="t">Report</span><span class="d"><span>Pick the sections you need, preview the finished document, and download a summary of the production to share with your team or attach to a memo.</span></span></button>
+</div>
+<figure class="bs-shot" id="bs-shot" role="tabpanel" aria-labelledby="bs-tab-0">
+<img src="media/tab-overview.jpg" alt="ByteSize Overview: Bates range, record, native and image counts, and tally cards for confidentiality, dates and custodians" width="2400" height="1600">
+<img src="media/tab-fields.jpg" alt="ByteSize Fields: every field in the load file with a sample value and how fully it is populated" width="2400" height="1600" loading="lazy" hidden>
+<img src="media/tab-grid.jpg" alt="ByteSize Grid: the whole production in a searchable, sortable table" width="2400" height="1600" loading="lazy" hidden>
+<img src="media/tab-qc.jpg" alt="ByteSize Quality check: records flagged for review, duplicate documents, Bates gaps and duplicate Bates" width="2400" height="1600" loading="lazy" hidden>
+<img src="media/tab-report.jpg" alt="ByteSize Report: choose the sections to include and preview the finished production report" width="2400" height="1600" loading="lazy" hidden>
+<button type="button" class="bs-expand" aria-haspopup="dialog"><svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>Expand</button>
+</figure>
+</div>
 
-    <!-- cone filter -->
-    <rect x="76" y="98" width="68" height="12" rx="5" fill="var(--steel)"/>
-    <path d="M82 110h56l-14 38H96z" fill="#E2DCC7"/>
-    <path d="M82 110h56l-14 38H96z" fill="none" stroke="var(--accent-deep)"
-          stroke-width="2.5" stroke-linejoin="round"/>
+<div class="bs-cards">
+<div class="bs-card"><span class="big">0 network calls</span><span class="k">Private by design</span><p>Your file is read in the browser using its local File API. No server, no analytics, and no external connections in the code.</p></div>
+<div class="bs-card"><span class="big">500,000 records · 5.5s</span><span class="k">Quick turnaround</span><p>Parses 500,000 records in about 5.5 seconds on a typical laptop.</p></div>
+</div>
+</div>
+</section>
 
-    <!-- coffee drips: filter to carafe -->
-    <g fill="var(--coffee-light)">
-      <ellipse class="drip"    cx="110" cy="154" rx="2.8" ry="3.8"/>
-      <ellipse class="drip c2" cx="110" cy="154" rx="2.8" ry="3.8"/>
-    </g>
+<!-- 02 USE CASES -->
+<section id="use-cases" class="bs-sec" aria-labelledby="uc-h">
+<p class="bs-seclabel">02 — Use cases</p>
+<div class="bs-body">
+<h2 id="uc-h">Where it earns its place in your back pocket.</h2>
+<div class="bs-cases">
+<div class="bs-case">
+<p class="bs-kicker">Incoming</p>
+<h3>“What did opposing counsel <b>just</b> send?”</h3>
+<p>Loading production materials into a review workspace takes time, and we've all needed simple information ASAP. With ByteSize, you can get initial metrics from opposing counsel's production right away, whether that's a quick sense of what just arrived or a high-level look at the metadata to build your review plan.</p>
+<p>Skip the duplicates and review each record once. If the production includes a unique hash value field (MD5 or SHA1), switch to the QC tab in ByteSize to identify records that are exact duplicates of each other, export the report, and pick one Bates number per set to review.</p>
+</div>
+<div class="bs-case">
+<p class="bs-kicker">Outgoing</p>
+<h3>A final <b>quality check</b> before you serve.</h3>
+<p>Confirm the export is exactly what you intend to serve. It could save you a clawback letter. Catch any Bates gaps, duplicate numbers or records, and metadata that points to privilege.</p>
+<p>The QC tab's “Flagged for Review” check highlights two kinds of records: those with privilege language anywhere in the metadata (such as “privileged,” “attorney-client,” “work product,” or “withheld”), and those whose metadata was scrubbed entirely. Instead of hunting for them, click “Search in Grid” to pull up just the flagged records and review them.</p>
+</div>
+<div class="bs-case">
+<p class="bs-kicker">ESI protocol</p>
+<h3>Were the <b>agreed-upon fields</b> produced?</h3>
+<p>Check that the fields produced match the ESI protocol. Each field shows a real sample value from the production, so you know exactly what it contains.</p>
+</div>
+<div class="bs-case">
+<p class="bs-kicker">Targeted lookup</p>
+<h3>Find the records <b>from a custodian</b> in 2024.</h3>
+<p>Using the Grid tab, filter to the desired custodian(s), then search or sort the relevant date field to see how many records were produced in that window. Export the Bates numbers so you can review those records in full later and decide whether they're worth using as deposition exhibits.</p>
+</div>
+</div>
+</div>
+</section>
 
-    <!-- steam escaping around the carafe collar -->
-    <g stroke="var(--text-faint)" stroke-width="2.5" stroke-linecap="round" fill="none">
-      <path class="steam"    d="M88 170c-4-6 4-9 0-15"/>
-      <path class="steam s2" d="M136 170c-4-6 4-9 0-15"/>
-      <path class="steam s3" d="M92 166c-4-6 4-9 0-15"/>
-    </g>
+<!-- 03 GET STARTED -->
+<section id="start" class="bs-sec" aria-labelledby="start-h">
+<p class="bs-seclabel">03 — Get started</p>
+<div class="bs-body">
+<h2 id="start-h">Four steps, one file.</h2>
+<p class="bs-lead">One HTML file. Save it to your desktop, or bookmark it for quick access. It works fully offline, so your production metadata never leaves your computer, and it handles up to 500,000 records with ease.</p>
+<ol class="bs-steps">
+<li><span class="n">01</span><b>Download</b><span>Grab the ByteSize zip and unzip it.</span></li>
+<li><span class="n">02</span><b>Open</b><span>Double-click the HTML file to open it in your browser.</span></li>
+<li><span class="n">03</span><b>Select</b><span>Choose or drop in your DAT file.</span></li>
+<li><span class="n">04</span><b>Review</b><span>Explore all five views in seconds.</span></li>
+</ol>
+<div class="bs-window">
+<div class="bs-wbar" aria-hidden="true"><i></i><i></i><i></i></div>
+<video class="bs-demo bs-lazyvid" data-src="media/bytesize-demo.mp4" poster="media/bytesize-demo-poster.jpg" muted="" loop="" playsinline="" controls="" preload="none" width="1280" height="720" aria-label="ByteSize product demo: downloading ByteSize, opening it, selecting a DAT file, and reviewing the results"></video>
+</div>
+<div class="bs-rely">
+<p class="bs-label">Before you rely on it</p>
+<p>Always confirm productions against your review platform. ByteSize can make mistakes too.</p>
+</div>
+</div>
+</section>
 
-    <!-- carafe: tall and tapered, with a metal collar and a squared handle -->
-    <rect x="74" y="170" width="76" height="14" rx="6" fill="var(--steel)"/>
-    <path d="M80 184h68l-5 62a10 10 0 0 1-10 10H95a10 10 0 0 1-10-10z" fill="var(--glass)"/>
-    <g clip-path="url(#carafeClip)">
-      <rect class="coffee-fill" x="80" y="184" width="68" height="72" fill="var(--coffee)"/>
-    </g>
-    <path d="M80 184h68l-5 62a10 10 0 0 1-10 10H95a10 10 0 0 1-10-10z" fill="none"
-          stroke="var(--accent-deep)" stroke-width="3" stroke-linejoin="round"/>
-    <path d="M81 198H68a4 4 0 0 0-4 4v28a4 4 0 0 0 4 4h14" fill="none"
-          stroke="var(--accent-deep)" stroke-width="5.5" stroke-linejoin="round" stroke-linecap="round"/>
-  </svg>
+<!-- 04 FAQ -->
+<section id="faq" class="bs-sec" aria-labelledby="faq-h">
+<p class="bs-seclabel">04 — FAQ</p>
+<div class="bs-body">
+<h2 id="faq-h">Frequently Asked Questions</h2>
+<div class="bs-faqs">
+<details class="bs-faq" open>
+<summary><h3>Is my file uploaded anywhere?</h3><svg class="bs-chev" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p>No. ByteSize opens your DAT with your browser's local File API and does all the work on your own computer. There's no server, no analytics, and no external connection in the code. Close the tab and the data is gone.</p>
+</details>
+<details class="bs-faq">
+<summary><h3>Does it work on a locked-down or air-gapped computer?</h3><svg class="bs-chev" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p>Yes. Everything, fonts included, lives inside the one HTML file, so there's nothing to install and no admin rights needed. It runs the same with the network unplugged.</p>
+</details>
+<details class="bs-faq">
+<summary><h3>What load-file formats does it read?</h3><svg class="bs-chev" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p>Concordance DAT files (þ and ® delimiters, or ASCII 20), plus plain delimited text separated by tabs, pipes, commas, semicolons, or carets. The delimiter and encoding (UTF-8, UTF-16 LE/BE, or Windows-1252) are detected automatically.</p>
+</details>
+<details class="bs-faq">
+<summary><h3>What if ByteSize doesn't recognize my Bates fields?</h3><svg class="bs-chev" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p>ByteSize knows the common names for Bates fields. If your production uses different names, ByteSize will ask you to review the fields. It makes its best guess first, but you can confirm or change any match so you’re reviewing the most accurate information. Select “Remember for files like this,” and you won’t have to match the fields every time.</p>
+</details>
+<details class="bs-faq">
+<summary><h3>What is the “Flagged for Review” QC check, and how does it work?</h3><svg class="bs-chev" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p>It flags two kinds of records. <b>Privilege language in metadata:</b> any record whose metadata mentions terms like “privileged,” “attorney-client,” “work product,” or “withheld,” so you can confirm nothing privileged is about to go out the door. <b>Scrubbed metadata:</b> records where only production fields, like Bates numbers, are populated, which usually means the rest was intentionally removed. Use “Search in Grid” to jump straight to the flagged records. Flags are a starting point for your review; ByteSize doesn't make privilege determinations.</p>
+</details>
+<details class="bs-faq">
+<summary><h3>Does it cost anything?</h3><svg class="bs-chev" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p>No. ByteSize is free to download and use. There's no license key, account, or subscription.</p>
+</details>
+<details class="bs-faq">
+<summary><h3>Which browsers does it work in?</h3><svg class="bs-chev" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p>Any current version of Chrome, Edge, Firefox, or Safari.</p>
+</details>
+<details class="bs-faq">
+<summary><h3>How big a production can it handle?</h3><svg class="bs-chev" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg></summary>
+<p>It's been tested with 500,000 records, which parse in about 5.5 seconds on a typical laptop. Productions past roughly a million rows can run into the browser's own memory limits.</p>
+</details>
+</div>
+</div>
+</section>
 
-  <h1>Something’s brewing!<br><em>Check back soon.</em></h1>
+<!-- 05 CONTRIBUTE -->
+<section id="contribute" class="bs-sec" aria-labelledby="contrib-h">
+<p class="bs-seclabel">05 — Contribute</p>
+<div class="bs-body">
+<h2 id="contrib-h">Built for the people who want to read production metadata.</h2>
+<p class="bs-lead">With your help we can improve it too! Encountered a DAT that isn't parsing? See an opportunity to add a new item? Send me a note with a description of the issue or a suggestion.</p>
+<div class="bs-actions">
+<a class="bs-btn bs-btn-line" href="https://docs.google.com/forms/d/e/1FAIpQLScTP_JqxQ0osEMyYHDdpp4_mIiD7SEIAdd3HISqST_14FHXog/viewform" data-ga-event="click_report_issue" target="_blank" rel="noopener">Report an issue</a>
+<a class="bs-btn bs-btn-line" href="https://docs.google.com/forms/d/e/1FAIpQLSfMuerR8ueo4fIijOt7FZmswkW7FRsakoJI1l_e2I-0g-gEjA/viewform" data-ga-event="click_suggestion" target="_blank" rel="noopener">Send a suggestion</a>
+<a class="bs-btn bs-btn-deep" href="https://github.com/alfeygin/bytesize.tool" target="_blank" rel="noopener">⭐ Star on GitHub</a>
+</div>
+</div>
+</section>
 
-
+</div>
 </main>
 
+<!-- LIGHTBOX for the 01 screenshots -->
+<div class="bs-lb" role="dialog" aria-modal="true" aria-labelledby="bs-lb-title" hidden>
+<div class="bs-lbbar">
+<h3 id="bs-lb-title">Overview</h3>
+<button type="button" class="bs-lbclose" aria-label="Close"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg></button>
+</div>
+<img src="media/tab-overview.jpg" alt="">
+</div>
+
+<!-- FLOATING TIP PILL -->
+<a class="bs-tip" href="https://ko-fi.com/bytesizetool" data-ga-event="click_kofi" target="_blank" rel="noopener">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9h12v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"></path><path d="M16 11h1.5a2.5 2.5 0 0 1 0 5H16"></path><path d="M8 3.5c0 1 1 1.5 1 2.5M12 3.5c0 1 1 1.5 1 2.5"></path></svg>
+Matcha-ppreciated :)</a>
+
+</div>
+
+<script>
+var bsCleanup = (function () {
+  var off = [];
+  function on(el, ev, fn, opt) { el.addEventListener(ev, fn, opt); off.push(function () { el.removeEventListener(ev, fn, opt); }); }
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Hero film: pause / play button (moving content needs a way to stop). */
+  document.querySelectorAll('.bs-vidbtn').forEach(function (btn) {
+    var v = btn.parentElement.querySelector('video');
+    if (!v) return;
+    function sync() {
+      var label = v.paused ? 'Play animation' : 'Pause animation';
+      btn.setAttribute('aria-label', label); btn.title = label;
+      btn.classList.toggle('is-paused', v.paused);
+    }
+    if (reduce) { v.removeAttribute('autoplay'); v.pause(); }
+    on(v, 'play', sync); on(v, 'pause', sync);
+    on(btn, 'click', function () { if (v.paused) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause(); });
+    sync();
+  });
+
+  /* Sidebar index: highlight the section in view; links glide there in 500ms on a
+     cubic-bezier(0.25, 0.85, 0.15, 1) curve, holding the clicked item's highlight meanwhile. */
+  var ids = ['what', 'use-cases', 'start', 'faq', 'contribute'];
+  var jumping = false;
+  function mark(cur) {
+    document.querySelectorAll('.bs-nav a').forEach(function (a) {
+      var hit = a.getAttribute('href') === '#' + cur;
+      a.classList.toggle('is-active', hit);
+      if (hit) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+    });
+  }
+  function spy() {
+    if (jumping) return;
+    var cur = ids[0];
+    ids.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.35) cur = id;
+    });
+    var doc = document.documentElement;
+    if (window.innerHeight + window.scrollY >= doc.scrollHeight - 4) cur = ids[ids.length - 1];
+    mark(cur);
+  }
+  on(window, 'scroll', spy, { passive: true });
+  on(window, 'resize', spy);
+  spy();
+  function bezier(x1, y1, x2, y2) {
+    var cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+    var cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+    function sx(t) { return ((ax * t + bx) * t + cx) * t; }
+    function sy(t) { return ((ay * t + by) * t + cy) * t; }
+    function dx(t) { return (3 * ax * t + 2 * bx) * t + cx; }
+    return function (x) {
+      var t = x;
+      for (var i = 0; i < 8; i++) { var e = sx(t) - x, d = dx(t); if (Math.abs(e) < 1e-6 || !d) break; t -= e / d; }
+      return sy(Math.min(1, Math.max(0, t)));
+    };
+  }
+  var ease = bezier(0.25, 0.85, 0.15, 1), DURATION = 500;
+  function glide(end, done) {
+    var start = window.scrollY, t0 = null;
+    if (reduce) { window.scrollTo(0, end); if (done) done(); return; }
+    jumping = true;
+    function step(now) {
+      if (t0 === null) t0 = now;
+      var p = Math.min(1, (now - t0) / DURATION);
+      window.scrollTo(0, start + (end - start) * ease(p));
+      if (p < 1) { requestAnimationFrame(step); return; }
+      jumping = false;
+      if (done) done();
+    }
+    requestAnimationFrame(step);
+  }
+  /* Capture phase, so the click is ours even inside a host page that handles links itself. */
+  on(document, 'click', function (e) {
+    var a = e.target.closest ? e.target.closest('.bs-nav a, .bs-brand') : null;
+    if (!a) return;
+    var id = a.getAttribute('href').slice(1), el = document.getElementById(id);
+    if (!el) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (id !== 'top') mark(id);
+    /* When the page sits in a frame that doesn't scroll on its own (e.g. a preview showing the
+       full page), let the browser scroll whichever container holds it. */
+    var se = document.scrollingElement || document.documentElement;
+    if (se.scrollHeight <= window.innerHeight + 2) {
+      el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      return;
+    }
+    if (id === 'top') { glide(0, spy); return; }
+    try { if (history.replaceState) history.replaceState(null, '', '#' + id); } catch (err) {}
+    glide(el.getBoundingClientRect().top + window.scrollY, spy);
+  }, true);
+
+  /* 01 tab picker: pick a view, see its screenshot; Expand (or a click on the picture) opens it large. */
+  var tabs = [].slice.call(document.querySelectorAll('.bs-tab'));
+  var shot = document.querySelector('.bs-shot');
+  var lb = document.querySelector('.bs-lb');
+  if (shot && tabs.length) {
+    var imgs = [].slice.call(shot.querySelectorAll('img'));
+    var cur = 0, opener = null;
+    function select(i, focus) {
+      cur = i;
+      tabs.forEach(function (t, k) {
+        t.setAttribute('aria-selected', k === i ? 'true' : 'false');
+        t.tabIndex = k === i ? 0 : -1;
+      });
+      imgs.forEach(function (im, k) { im.hidden = k !== i; });
+      shot.setAttribute('aria-labelledby', tabs[i].id);
+      if (focus) tabs[i].focus();
+    }
+    tabs.forEach(function (t, i) {
+      on(t, 'click', function () { select(i); });
+      on(t, 'keydown', function (e) {
+        var k = e.key, n = tabs.length;
+        if (k === 'ArrowDown' || k === 'ArrowRight') { e.preventDefault(); select((i + 1) % n, true); }
+        else if (k === 'ArrowUp' || k === 'ArrowLeft') { e.preventDefault(); select((i - 1 + n) % n, true); }
+        else if (k === 'Home') { e.preventDefault(); select(0, true); }
+        else if (k === 'End') { e.preventDefault(); select(n - 1, true); }
+      });
+    });
+    function openLb() {
+      if (!lb) return;
+      opener = document.activeElement;
+      var img = lb.querySelector('img');
+      img.src = imgs[cur].currentSrc || imgs[cur].src;
+      img.alt = imgs[cur].alt;
+      lb.querySelector('h3').textContent = tabs[cur].querySelector('.t').textContent;
+      lb.hidden = false;
+      document.documentElement.style.overflow = 'hidden';
+      lb.querySelector('.bs-lbclose').focus();
+    }
+    function closeLb() {
+      if (!lb || lb.hidden) return;
+      lb.hidden = true;
+      document.documentElement.style.overflow = '';
+      if (opener && opener.focus) opener.focus();
+    }
+    on(shot, 'click', openLb);
+    if (lb) {
+      on(lb, 'click', closeLb);
+      on(document, 'keydown', function (e) {
+        if (lb.hidden) return;
+        if (e.key === 'Escape') closeLb();
+        else if (e.key === 'Tab') { e.preventDefault(); lb.querySelector('.bs-lbclose').focus(); }
+      });
+    }
+  }
+
+  /* Sidebar mascot: hover to say hi; each click moves on to his next line. */
+  var mw = document.querySelector('.bs-mwrap');
+  if (mw) {
+    var lines = ['Hi! :)', 'Got a DAT?', 'I read it offline!', 'Say hi to Anna →'];
+    var li = 0, bubble = mw.querySelector('.bs-bubble'), timer = null;
+    on(mw.querySelector('.bs-mascot'), 'click', function () {
+      li = (li + 1) % lines.length;
+      bubble.textContent = lines[li];
+      mw.classList.add('is-talking');
+      clearTimeout(timer);
+      timer = setTimeout(function () { mw.classList.remove('is-talking'); }, 2600);
+    });
+  }
+
+  /* Product demo: if it has a data-src (website), fetch it once the reader is within 600px;
+     play only while at least 35% of it is on screen, pause when it scrolls away. */
+  document.querySelectorAll('video.bs-demo').forEach(function (v) {
+    function load() { var s = v.getAttribute('data-src'); if (s && !v.getAttribute('src')) v.src = s; }
+    if (!('IntersectionObserver' in window)) { load(); return; }
+    var near = new IntersectionObserver(function (es) {
+      if (es.some(function (e) { return e.isIntersecting; })) { load(); near.disconnect(); }
+    }, { rootMargin: '600px 0px' });
+    near.observe(v);
+    off.push(function () { near.disconnect(); });
+    if (reduce) return;   /* reduced motion: it loads, but waits for the viewer to press play */
+    var seen = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting && e.intersectionRatio >= 0.35) { load(); var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+        else if (!v.paused) v.pause();
+      });
+    }, { threshold: [0, 0.35] });
+    seen.observe(v);
+    off.push(function () { seen.disconnect(); });
+  });
+
+  return function () { off.forEach(function (f) { f(); }); };
+})();
+</script>
 </body>
 </html>
